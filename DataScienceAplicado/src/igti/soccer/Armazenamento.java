@@ -32,7 +32,6 @@ import org.apache.spark.sql.SparkSession;
 /**
  * Fase de processamento e persistência para o DW
  * @author abrhaao
- *
  */
 public class Armazenamento {
 

@@ -38,6 +38,10 @@ import my.teste.JavaWordCount;
 import scala.Tuple2;
 
 
+/**
+ * Fase de Coleta
+ * @author abrhaao
+ */
 public final class CargaDadosWeb {
 	private static final Pattern SPACE = Pattern.compile(" ");
 

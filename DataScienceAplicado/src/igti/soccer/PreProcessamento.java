@@ -25,7 +25,6 @@ import igti.soccer.domain.Campeonato;
 /**
  * Esta fase vai processar os arquivos textos no formato HTML já hospedados no sistema de arquivos, pois já foram coletados da Web na fase anterior. 
  * @author abrhaao
- *
  */
 public class PreProcessamento {
 
