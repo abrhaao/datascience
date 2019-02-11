@@ -35,29 +35,6 @@ import org.apache.spark.sql.SparkSession;
  */
 public class Armazenamento {
 
-  // $example on:spark_hive$
-  public static class Record implements Serializable {
-    private int key;
-    private String value;
-
-    public int getKey() {
-      return key;
-    }
-
-    public void setKey(int key) {
-      this.key = key;
-    }
-
-    public String getValue() {
-      return value;
-    }
-
-    public void setValue(String value) {
-      this.value = value;
-    }
-  }
-  // $example off:spark_hive$
-
   public static void main(String[] args) {
     // $example on:spark_hive$
     // warehouseLocation points to the default location for managed databases and tables
@@ -77,8 +54,9 @@ public class Armazenamento {
     
     StringBuffer sentenceCreateTable = new StringBuffer();
     sentenceCreateTable.append("CREATE TABLE IF NOT EXISTS dw_jogador (eid BIGINT, nome STRING, clube STRING, posicao STRING, idade INT, "); 
-    sentenceCreateTable.append(" jogos INT, gols INT, assistencias INT, finalizacoes INT, finalizacoes_certas INT, faltas_sofridas INT, ");
-    sentenceCreateTable.append(" cards_amerlo INT, cards_vermelho INT, liga STRING, temporada INT ");
+    sentenceCreateTable.append(" jogos INT, gols INT, assistencias INT, finalizacoes INT, finalizacoes_certas INT, ");
+    sentenceCreateTable.append(" gols_sofridos INT, faltas INT, faltas_sofridas INT, ");       
+    sentenceCreateTable.append(" cards_amarelo INT, cards_vermelho INT, liga STRING, temporada INT ");
     sentenceCreateTable.append(") USING hive");       
     spark.sql(sentenceCreateTable.toString());
     
@@ -88,13 +66,7 @@ public class Armazenamento {
     
     
     
-    StringBuffer sentenceInsertTable = new StringBuffer();
-    //sentenceInsertTable.append("INSERT into dw_jogador ( select 33, nome, clube, posicao, 99,  "); 
-    //sentenceInsertTable.append(" instr ( atributos, 'Jogos' ),   instr ( atributos, 'Gols' ),  instr ( atributos, 'Assistencias' ), ");
-    //sentenceInsertTable.append(" instr ( atributos, 'Finalizacoes' ), instr ( atributos, 'FinalizacoesCertas' ), instr ( atributos, 'FaltasSofridas' ), ");
-    //sentenceInsertTable.append(" instr ( atributos, 'CardsAmarelo' ), instr ( atributos, 'CardsVermelho' ) from arch_jogador ) ");
-    
-    
+    StringBuffer sentenceInsertTable = new StringBuffer();    
     sentenceInsertTable.append("INSERT into dw_jogador ( select 33, nome, clube, posicao, "); 
     sentenceInsertTable.append(" substr ( atributos, instr ( atributos, '<Idade>' ) + length('<Idade>'), instr ( atributos, '</Idade>' )-length('</Idade>')), ");
     sentenceInsertTable.append(" substr ( atributos, instr ( atributos, '<Jogos>' ) + length('<Jogos>'), instr ( atributos, '</Jogos>' )-instr ( atributos, '<Jogos>' )-length('</Jogos>')+1), ");  
@@ -102,6 +74,8 @@ public class Armazenamento {
     sentenceInsertTable.append(" substr ( atributos, instr ( atributos, '<Assistencias>' ) + length('<Assistencias>'), instr ( atributos, '</Assistencias>' )-instr ( atributos, '<Assistencias>' )-length('</Assistencias>')+1), ");      
     sentenceInsertTable.append(" substr ( atributos, instr ( atributos, '<Finalizacoes>' ) + length('<Finalizacoes>'), instr ( atributos, '</Finalizacoes>' )-instr ( atributos, '<Finalizacoes>' )-length('</Finalizacoes>')+1),   ");
     sentenceInsertTable.append(" substr ( atributos, instr ( atributos, '<FinalizacoesCertas>' ) + length('<FinalizacoesCertas>'), instr ( atributos, '</FinalizacoesCertas>' )-instr ( atributos, '<FinalizacoesCertas>' )-length('</FinalizacoesCertas>')+1), ");   
+    sentenceInsertTable.append(" substr ( atributos, instr ( atributos, '<GolsSofridos>' ) + length('<GolsSofridos>'), instr ( atributos, '</GolsSofridos>' )-instr ( atributos, '<GolsSofridos>' )-length('</GolsSofridos>')+1),   ");
+    sentenceInsertTable.append(" substr ( atributos, instr ( atributos, '<Faltas>' ) + length('<Faltas>'), instr ( atributos, '</Faltas>' )-instr ( atributos, '<Faltas>' )-length('</Faltas>')+1),   ");
     sentenceInsertTable.append(" substr ( atributos, instr ( atributos, '<FaltasSofridas>' ) + length('<FaltasSofridas>'), instr ( atributos, '</FaltasSofridas>' )-instr ( atributos, '<FaltasSofridas>' )-length('</FaltasSofridas>')+1),   ");
     sentenceInsertTable.append(" substr ( atributos, instr ( atributos, '<CardsAmarelo>' ) + length('<CardsAmarelo>'), instr ( atributos, '</CardsAmarelo>' )-instr ( atributos, '<CardsAmarelo>' )-length('</CardsAmarelo>')+1),   ");
     sentenceInsertTable.append(" substr ( atributos, instr ( atributos, '<CardsVermelho>' ) + length('<CardsVermelho>'), instr ( atributos, '</CardsVermelho>' )-instr ( atributos, '<CardsVermelho>' )-length('</CardsVermelho>')+1),  ");
